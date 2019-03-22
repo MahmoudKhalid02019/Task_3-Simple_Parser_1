@@ -1,0 +1,117 @@
+stmt(ST) :-
+
+    reverse(ST, [H|T]) , 
+
+    H = ";" , 
+
+    reverse(T, Stmt),
+
+    assign_stmt(Stmt).
+
+
+
+assign_stmt([ID,"="|EXPR]) :-
+
+    id(ID),
+
+    writeln("op : ="),
+
+    expr(EXPR).
+
+
+
+expr([Term,"+"|EXPR]) :-
+
+    term(Term),
+
+    writeln("op : +"),
+
+    expr(EXPR).
+
+
+
+expr([Term,"-"|EXPR]) :-
+
+    term(Term),
+
+    writeln("op : -"),
+
+    expr(EXPR).
+
+expr(Term) :-
+
+    term(Term).
+
+term([Factor,"*"|Term]) :-
+
+    factor(Factor),
+
+    writeln("op : *"),
+
+    term(Term).
+
+term([Factor,"/"|Term]) :-
+
+    factor(Factor),
+
+    writeln("op : /"),
+
+    term(Term).
+
+term(Factor) :-
+
+    factor(Factor).
+
+factor(Factor) :-
+
+    id(Factor);
+
+    digit_me(Factor).
+
+
+
+factor([Factor]) :-
+
+    id(Factor);
+
+    digit_me(Factor).
+
+id(ID) :-
+
+    member(ID, [
+
+        "a","b","c","d","e",
+
+        "f","g","h","i","j",
+
+        "k","l","m","n","o",
+
+        "p","q","r","s","t",
+
+        "u","v","w","x","y",
+
+        "z"]),
+
+    write("ID:"),
+
+    writeln(ID).
+
+digit_me(Digit) :-
+
+    member(Digit, ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]),
+
+    write("Digit :"),
+
+    writeln(Digit).     
+
+main(CodeLine) :-
+
+    split_string(CodeLine, " ", " ", ListOfTokens),
+
+    writeln(ListOfTokens) , 
+
+    stmt(ListOfTokens)
+
+start:-
+
+    main("a = 2 ;").
